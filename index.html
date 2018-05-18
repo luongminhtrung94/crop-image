@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./cropper-master/dist/cropper.min.css">
+    <style>
+        img {
+            max-width: 100%; /* This rule is very important, please do not ignore this! */
+        }
+        #crop-image-cropped,#cancel-image-cropped,.image-container{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <form id="formSubmit" method="POST">
+        <select id="select">
+            <option value="1920x150">1920x150</option>
+            <option value="400x400">400x400</option>
+            <option value="800x100">800x100</option>
+        </select>
+        <input type="file" id="upload-image"/>
+        <div class="image-container">
+            <img id="image" src="">
+        </div>
+        <div class="preview-image-container">
+            <img id="preview-image"/>
+        </div>
+        <p>Size: <span class="size-image-cropped"></span></p>
+        <button type="button" id="crop-image-cropped">Crop</button>
+        <button type="button" id="cancel-image-cropped">Cancel</button>
+        <button type="button" id="upload">Upload</button>
+    </form>
+
+    <script src="./jquery-3.3.1.min.js"></script>
+    <script src="./cropper-master/dist/cropper.min.js"></script>
+    <script>
+        /*---------------------------------------
+            INITIAL IMAGE TO CROP
+        ------------------------------------------*/
+        var imageFile;
+        var $image = $('#image');
+        $image.cropper({
+            aspectRatio: 1920  / 150 ,
+            viewMode:1,
+            zoomable:false
+        });
+        var cropper = $image.data('cropper');
+/*console.log( $image.data('cropper').options({
+    aspectRatio : 2
+}) );*/
+        $image.cropper({
+            aspectRatio:400 / 200,
+            viewMode:1,
+            zoomable:false
+        });
+        /*---------------------------------------
+            LOAD IMAGE LOCAL
+        -----------------------------------------*/        
+        $("#upload-image").change(function() {
+            readURL(this);
+            $(this).hide();
+            $(".image-container").show();
+            $("#crop-image-cropped").show();
+            $("#cancel-image-cropped").show();
+            $(".preview-image-container").hide();
+
+            // CONVERT IMAGE TO BASE 64
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image').attr('src', e.target.result);
+                        cropper.replace(e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        });
+        
+        /*----------------------------------------
+            SHOW IMAGE CROPPED
+        ------------------------------------------*/
+        $("#crop-image-cropped").on('click', function () {
+            $(".image-container").hide();
+            $("#upload-image").show();
+            $("#crop-image-cropped").hide();
+            $("#cancel-image-cropped").hide();
+            $(".preview-image-container").show();
+
+            $image.cropper('getCroppedCanvas',{
+                width:1920,
+            }).toBlob(function (blob) {
+                imageFile = blob;
+
+                //get size file
+                var reader = new FileReader();
+                reader.readAsDataURL(blob); 
+                reader.onloadend = function() {
+                    $("#preview-image").attr("src" , reader.result);
+
+                    var img = new Image();
+                    img.onload =function() {
+                        var width = img.width,
+                            height = img.height;    
+                        $(".size-image-cropped").text(width + "x" + height);
+                    };
+                    img.src = reader.result;
+                }
+
+                //submit image
+                var form = new FormData();
+                form.append("image", new File([imageFile], $("#upload-image").val().split("\\")[ $("#upload-image").val().split("\\").length - 1] ) );
+                $.ajax({
+                    url: 'http://example.com/script.php',
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function(data){
+                        alert(data);
+                    }
+                });
+                $("#upload-image").val("");
+
+            });
+        });
+
+        /*----------------------------------------------
+            CANCEL CROP IMAGE
+        -----------------------------------------------*/
+        $("#cancel-image-cropped").on("click" , function(){
+            imageFile = "";
+
+            $(".image-container").hide();
+            $("#upload-image").show();
+            $("#upload-image").val("");
+            $("#crop-image-cropped").hide();
+            $("#cancel-image-cropped").hide();
+            $(".preview-image-container").show();
+        });
+
+
+        //--------------------------------------------------------------        
+        function blobToFile(theBlob, fileName){
+            theBlob.lastModifiedDate = new Date();
+            theBlob.name = fileName;
+            return theBlob;
+        }
+            
+    </script>
+</body>
+</html>
