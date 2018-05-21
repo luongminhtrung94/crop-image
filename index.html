@@ -41,21 +41,30 @@
         /*---------------------------------------
             INITIAL IMAGE TO CROP
         ------------------------------------------*/
+        window.widthImage = 1920;
+        window.heightImage = 150;
         var imageFile;
         var $image = $('#image');
-        $image.cropper({
-            aspectRatio: 1920  / 150 ,
+        var options = {
+            aspectRatio: window.widthImage   / window.heightImage  ,
             viewMode:1,
             zoomable:false
-        });
-        var cropper = $image.data('cropper');
-/*console.log( $image.data('cropper').options({
-    aspectRatio : 2
-}) );*/
-        $image.cropper({
-            aspectRatio:400 / 200,
-            viewMode:1,
-            zoomable:false
+        };
+        
+        $image.cropper(options);
+        var cropper  =  $image.data('cropper');
+
+       
+        /*---------------------------------------
+            CHANGE RATIO
+        ------------------------------------------*/
+        $("#select").on("change" , function(){
+            window.widthImage = $(this).val().split("x")[0];
+            window.heightImage = $(this).val().split("x")[1];
+            cropper.options.aspectRatio = +window.widthImage / +window.heightImage;
+            if($(".image-container").css("display") == "block"){
+                $("#upload-image").trigger("change");
+            }
         });
         /*---------------------------------------
             LOAD IMAGE LOCAL
@@ -92,7 +101,8 @@
             $(".preview-image-container").show();
 
             $image.cropper('getCroppedCanvas',{
-                width:1920,
+                width: +window.widthImage,
+                height: +window.heightImage
             }).toBlob(function (blob) {
                 imageFile = blob;
 
