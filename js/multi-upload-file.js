@@ -1,16 +1,10 @@
 /*---------------------------------------
     INITIAL IMAGE TO CROP
 ------------------------------------------*/
-window.widthImage = 1920;
-window.heightImage = 150;
 var $selectedUrl;
-var imageFile;
 var $image = $('#modal-crop-image .crop-image');
 var options = {
-    // cropBoxResizable:false,
-    // autoCropArea:1,
     dragMode:"none",
-    // aspectRatio: window.widthImage   / window.heightImage  ,
     viewMode:1,
     zoomable:false
 };

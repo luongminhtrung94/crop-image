@@ -94,9 +94,20 @@
 
 <body style="padding:30px">
 
-    <div class="multi-upload-file">
-        <label class="mark-input" for="file-upload">+</label>
-        <input type="file" style="display: none" id="file-upload" class="input-upload-file" multiple  accept="image/x-png,image/gif,image/jpeg"/>
+    <div class="multi-upload-file multi-upload-file1">
+        <label class="mark-input" for="file-upload1">+</label>
+        <input type="file" style="display: none" id="file-upload1" class="input-upload-file" multiple  accept="image/x-png,image/gif,image/jpeg"/>
+        <input type='hidden'/>
+
+        <div class="image-preview">
+            
+        </div>
+        <div style="clear:both"></div>
+    </div>
+
+    <div class="multi-upload-file multi-upload-file2">
+        <label class="mark-input" for="file-upload2">+</label>
+        <input type="file" style="display: none" id="file-upload2" class="input-upload-file" multiple  accept="image/x-png,image/gif,image/jpeg"/>
         <input type='hidden'/>
 
         <div class="image-preview">
@@ -106,41 +117,86 @@
     </div>
 
     
-    <!-- Modal -->
-    <div class="modal fade" id="modal-detail-image" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title">Preview image</h5>
-            </div>
-            <div class="modal-body">
-                <img class='detail-image' src='/download.jpg' style='display:block;margin:auto;max-width:100%;'/>
-            </div>
-          </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="modal-crop-image" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-multi-upload-file1">
+        <!-- Modal -->
+        <div class="modal fade" id="modal-detail-image" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h5 class="modal-title">Crop image</h5>
+                    <h5 class="modal-title">Preview image</h5>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <img class='crop-image' src='/download.jpg' style='display:block;width:100% !important;'/>
+                    <img class='detail-image' src='/download.jpg' style='display:block;margin:auto;max-width:100%;'/>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-crop-image" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h5 class="modal-title">Crop image</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <img class='crop-image' src='/download.jpg' style='display:block;width:100% !important;'/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger crop-cancel">Cancel</button>
+                        <button type="button" class="btn btn-primary crop-action">Crop</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger crop-cancel">Cancel</button>
-                    <button type="button" class="btn btn-primary crop-action">Crop</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-multi-upload-file2">
+        <!-- Modal -->
+        <div class="modal fade" id="modal-detail-image" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">Preview image</h5>
+                </div>
+                <div class="modal-body">
+                    <img class='detail-image' src='/download.jpg' style='display:block;margin:auto;max-width:100%;'/>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-crop-image" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h5 class="modal-title">Crop image</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <img class='crop-image' src='/download.jpg' style='display:block;width:100% !important;'/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger crop-cancel">Cancel</button>
+                        <button type="button" class="btn btn-primary crop-action">Crop</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,7 +206,16 @@
     <script src="./cropper-master/dist/cropper.min.js"></script>
     <script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
-    <script src="./js/multi-upload-file.js"></script>
+    <!--<script src="./js/multi-upload-file.js"></script> -->
+    <script src="./js/plugin-multi-upload-file.js"></script>
+    <script>
+        $(".multi-upload-file1").uploadMultiImage({
+            dataModal :".modal-multi-upload-file1"
+        });
+        $(".multi-upload-file2").uploadMultiImage({
+            dataModal :".modal-multi-upload-file2"
+        });
+    </script>
 
 </body>
 
