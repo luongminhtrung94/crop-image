@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./dropzone/min/dropzone.min.css">
+    <link rel="stylesheet" href="./dropzone/min/basic.min.css">
+    <title>Document</title>
+    <style>
+        .custom-dropzone .dz-image {
+            background-color:#eee;
+        }
+        .custom-dropzone .dz-image img{
+            position:absolute;
+            top:50%;
+            left:50%;
+            max-width:100%;
+            transform:translate(-50%,-50%);
+        }
+    </style>
+</head>
+<body>
+<form 
+    class="dropzone custom-dropzone"
+    enctype="multipart/form-data"
+    id="attachment">
+    
+</form>
+<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+    <script src="./jquery-3.3.1.min.js"></script>
+    <script src="./dropzone/min/dropzone.min.js"></script>
+    <script src="./dropzone.js"></script>
+</body>
+</html>
