@@ -5,11 +5,11 @@
 
 	var uploadMultiImage = function (options) {
         var $root = $(this);
-        var $rootModal = $(options.dataModal);
+        var $rootModal;
+        var urlApi = options.urlApi || "";
         var $hiddenInput = $root.find('input[type="hidden"]');
         var $selectedImage;
-        var $imageCrop = $rootModal.find('#modal-crop-image .crop-image');
-        console.log($imageCrop);
+        var $imageCrop;
         var options = {
             dragMode:"none",
             viewMode:1,
@@ -18,6 +18,12 @@
         var cropper;
 
 		var init = function(){
+            var idModal = Date.now();
+            $('body').append(templateModal(idModal) );
+
+            $rootModal = $("#" + idModal);
+            $imageCrop = $rootModal.find('#modal-crop-image .crop-image');
+
             $root.on("change" ,  ".input-upload-file" , onChangeInput);
             $root.on('click' , '.tool-remove' , onRemoveImage);
             $root.on('click' , '.tool-view' , onViewImage);
@@ -152,7 +158,78 @@
             });
         }; 
 
+        //--------------------------------------------------------------   
+        var uploadImage = function(form , callback){
+            $.ajax({
+                url: urlApi,
+                data: form,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    callback(data);
+                }
+            });
+        };
 
+
+        var templateImage = function(image , data){
+            return `<div class='image-item'>
+                <div class='tool-image'>
+                    <button class='tool-item tool-view flaticon-search'></button>
+                    <button class='tool-item tool-crop flaticon-crop' style='transition-delay: 0.1s;'></button>
+                    <button class='tool-item tool-remove flaticon-rubbish-bin' style='transition-delay: 0.2s;'></button>
+                </div>
+                <img data-image='${data}' src="${image}"/>
+            </div>`
+        };
+
+        var templateModal = function(idModal){
+            return `
+            <div id="${idModal}">
+                <!-- Modal -->
+                <div class="modal fade" id="modal-detail-image" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title">Preview image</h5>
+                        </div>
+                        <div class="modal-body">
+                            <img class='detail-image' src='/download.jpg' style='display:block;margin:auto;max-width:100%;'/>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modal-crop-image" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title">Crop image</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <img class='crop-image' src='/download.jpg' style='display:block;width:100% !important;'/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger crop-cancel">Cancel</button>
+                                <button type="button" class="btn btn-primary crop-action">Crop</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+        }
+
+        
         //init
         init.call(this);
     };
@@ -160,31 +237,7 @@
 
     $.fn.uploadMultiImage = uploadMultiImage;
 
-    //--------------------------------------------------------------   
-    var uploadImage = function(form , callback){
-        $.ajax({
-            url: 'http://localhost:8000/uploads',
-            data: form,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-                callback(data);
-            }
-        });
-    };
-    
-    
-    var templateImage = function(image , data){
-        return `<div class='image-item'>
-            <div class='tool-image'>
-                <button class='tool-item tool-view flaticon-search'></button>
-                <button class='tool-item tool-crop flaticon-crop' style='transition-delay: 0.1s;'></button>
-                <button class='tool-item tool-remove flaticon-rubbish-bin' style='transition-delay: 0.2s;'></button>
-            </div>
-            <img data-image='${data}' src="${image}"/>
-        </div>`
-    };
+  
 
 })(jQuery);
 
