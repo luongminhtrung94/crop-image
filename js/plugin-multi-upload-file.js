@@ -7,17 +7,30 @@
         var $root = $(this);
         var $rootModal;
         var urlApi = options.urlApi || "";
+
+        var resData = options.resData;
+
         var $hiddenInput = $root.find('input[type="hidden"]');
+        var hiddenInput = ($hiddenInput.val().split(",")[0]) ? $hiddenInput.val().split(",") : [] ;
+
         var $selectedImage;
+
+
         var $imageCrop;
+        var cropper;
         var options = {
             dragMode:"none",
             viewMode:1,
             zoomable:false
         };
-        var cropper;
 
 		var init = function(){
+
+            // init old data
+            hiddenInput.forEach(element => {
+                $root.find(".image-preview").append(templateImage(element));
+            });
+
             var idModal = Date.now();
             $('body').append(templateModal(idModal) );
 
@@ -45,9 +58,7 @@
                     form.append("uploadfile", input.files[i]);
     
                     uploadImage(form , function(data){
-                        $root.find(".image-preview").append(templateImage('http://localhost:8000' + data.url , data.url));
-    
-                        var hiddenInput = $hiddenInput.val();
+                        $root.find(".image-preview").append(templateImage(eval(resData)));
     
                         // if val is empty add url image
                         if(!hiddenInput){
@@ -56,7 +67,6 @@
                         }
     
                         // if value not empty update val input
-                        hiddenInput = hiddenInput.split(',');
                         hiddenInput.push(data.url);
                         
                         $hiddenInput.val(hiddenInput.join(','));
@@ -70,11 +80,9 @@
         --------------------------------------------- */
         var onRemoveImage = function(){
             var $parent =  $(this).closest('.image-item');
-            var hiddenInput = $hiddenInput.val();
 
             var dataImage = $parent.find('img').attr('data-image');
             // convert val to array
-            hiddenInput = hiddenInput.split(',');
             hiddenInput.splice(hiddenInput.indexOf(dataImage),1 );
 
             $hiddenInput.val(hiddenInput.join(','));
@@ -127,9 +135,7 @@
                 form.append("uploadfile",  file);
 
                 uploadImage(form , function(data){
-                    $root.find(".image-preview").append(templateImage('http://localhost:8000' + data.url , data.url));
-
-                    var hiddenInput = $hiddenInput.val();
+                    $root.find(".image-preview").append(templateImage(eval(resData)));
 
                     // if val is empty add url image
                     if(!hiddenInput){
@@ -138,16 +144,12 @@
                     }
 
                     // if value not empty update val input
-                    hiddenInput = hiddenInput.split(',');
                     hiddenInput.push(data.url);
                     $hiddenInput.val(hiddenInput.join(','));
 
 
-                    // remove old image
-                    var hiddenInput = $hiddenInput.val();
                     // convert val to array
                     var dataImage = $selectedImage.find('img').attr('data-image');
-                    hiddenInput = hiddenInput.split(',');
                     hiddenInput.splice(hiddenInput.indexOf(dataImage),1 );
                     $hiddenInput.val(hiddenInput.join(','));
                     $selectedImage.remove();
@@ -173,14 +175,14 @@
         };
 
 
-        var templateImage = function(image , data){
+        var templateImage = function(image){
             return `<div class='image-item'>
                 <div class='tool-image'>
                     <button class='tool-item tool-view flaticon-search'></button>
                     <button class='tool-item tool-crop flaticon-crop' style='transition-delay: 0.1s;'></button>
                     <button class='tool-item tool-remove flaticon-rubbish-bin' style='transition-delay: 0.2s;'></button>
                 </div>
-                <img data-image='${data}' src="${image}"/>
+                <img data-image='${image}' src="${image}"/>
             </div>`
         };
 

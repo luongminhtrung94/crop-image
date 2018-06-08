@@ -9,87 +9,7 @@
     <link rel="stylesheet" href="./cropper-master/dist/cropper.min.css">
     <link rel="stylesheet" href="./font/flaticon.css">
     <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
-    <style>
-        .image-item{
-            width:200px;
-            height:200px;
-            float:left;
-            border-radius: 10px;
-            overflow: hidden;
-            background-color:#eee;
-            position:relative;
-            margin:10px;
-        }
-        .image-item img{
-            position: absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            max-width: 100%;
-            z-index: 1;
-        }
-        .image-item:hover img{
-            -webkit-filter: blur(8px);
-            filter: blur(8px);
-        }
-
-        .tool-image{
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            z-index: 2;
-            transition:all 0.5s;
-            opacity: 0;
-            text-align: center;
-        }
-
-        .tool-image .tool-item{
-            transform:translateX(100px);
-            opacity: 0;
-            background-color:rgba(255, 255, 255, 0.4);
-            width:50px;
-            height:50px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 50px;
-            font-size: 25px;
-            color:rgba(0, 0, 0, 0.9);
-            border:none;
-            outline: none;
-            cursor: pointer;
-            margin:5px 0;
-            transition:all 0.5s;
-        }
-        .tool-image .tool-item:hover{
-            background-color:rgba(255, 255, 255, 0.8);
-        }
-
-        .tool-image .tool-item:before{
-            margin-left:0;
-        }
-        .image-item:hover .tool-image{
-            opacity: 1;
-        }
-        .image-item:hover .tool-item{
-            transform:translateX(0);
-            opacity: 1;
-        }
-        .multi-upload-file .mark-input{
-            width:80px;
-            height:80px;
-            background-color:#000;
-            display: inline-block;
-            border-radius: 15px;
-            cursor: pointer;
-            line-height: 80px;
-            font-size:80px;
-            text-align: center;
-            color:#fff;
-            font-weight: 100;
-        }
-        
-    </style>
+    <link rel="stylesheet" href="./css/multi-upload-file.css">
 </head>
 
 <body style="padding:30px">
@@ -97,7 +17,7 @@
     <div class="multi-upload-file multi-upload-file1">
         <label class="mark-input" for="file-upload1">+</label>
         <input type="file" style="display: none" id="file-upload1" class="input-upload-file" multiple  accept="image/x-png,image/gif,image/jpeg"/>
-        <input type='hidden'/>
+        <input type='hidden' value="http://localhost:8000/uploads/5656a56e334776bc121e1b7d8b88b6ba1528428987296.jpg"/>
 
         <div class="image-preview"></div>
         <div style="clear:both"></div>
@@ -122,12 +42,12 @@
     <script src="./js/plugin-multi-upload-file.js"></script>
     <script>
         $(".multi-upload-file1").uploadMultiImage({
-            dataModal :".modal-multi-upload-file1",
-            urlApi:"http://localhost:8000/uploads"
+            urlApi:"http://localhost:8000/uploads",
+            resData: "data.url"
         });
         $(".multi-upload-file2").uploadMultiImage({
-            dataModal :".modal-multi-upload-file2",
-            urlApi:"http://localhost:8000/uploads"
+            urlApi:"http://localhost:8000/uploads",
+            resData: "data.url"
         });
     </script>
 
