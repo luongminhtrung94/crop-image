@@ -62,12 +62,12 @@
     
                         // if val is empty add url image
                         if(!hiddenInput){
-                            $hiddenInput.val(data.url);
+                            $hiddenInput.val(eval(resData));
                             return false;
                         }
     
                         // if value not empty update val input
-                        hiddenInput.push(data.url);
+                        hiddenInput.push(eval(resData));
                         
                         $hiddenInput.val(hiddenInput.join(','));
                     });
@@ -139,12 +139,12 @@
 
                     // if val is empty add url image
                     if(!hiddenInput){
-                        $hiddenInput.val(data.url);
+                        $hiddenInput.val(eval(resData));
                         return false;
                     }
 
                     // if value not empty update val input
-                    hiddenInput.push(data.url);
+                    hiddenInput.push(eval(resData));
                     $hiddenInput.val(hiddenInput.join(','));
 
 
