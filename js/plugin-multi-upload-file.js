@@ -130,7 +130,7 @@
         var onCropImage =  function(){
             console.log($imageCrop);
             $imageCrop.cropper("getCroppedCanvas").toBlob(function (blob) {
-                var file = new File([blob], "jpg" );
+                var file = new File([blob], $selectedImage.find('img').attr('data-image') );
                 var form = new FormData();
                 form.append("uploadfile",  file);
 
@@ -178,9 +178,9 @@
         var templateImage = function(image){
             return `<div class='image-item'>
                 <div class='tool-image'>
-                    <button class='tool-item tool-view flaticon-search'></button>
-                    <button class='tool-item tool-crop flaticon-crop' style='transition-delay: 0.1s;'></button>
-                    <button class='tool-item tool-remove flaticon-rubbish-bin' style='transition-delay: 0.2s;'></button>
+                    <button type="button" class='tool-item tool-view flaticon-search'></button>
+                    <button type="button" class='tool-item tool-crop flaticon-crop' style='transition-delay: 0.1s;'></button>
+                    <button type="button" class='tool-item tool-remove flaticon-rubbish-bin' style='transition-delay: 0.2s;'></button>
                 </div>
                 <img data-image='${image}' src="${image}"/>
             </div>`
