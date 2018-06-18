@@ -7,6 +7,7 @@
         var $root = $(this);
         var $rootModal;
         var urlApi = options.urlApi || "";
+        var single = options.single || false;
 
         var resData = options.resData;
 
@@ -58,6 +59,13 @@
                     form.append("uploadfile", input.files[i]);
     
                     uploadImage(form , function(data){
+                        if(single){
+                            $root.find(".image-preview").html(templateImage(eval(resData)));
+                            hiddenInput = eval(resData);
+                            $hiddenInput.val(eval(resData) );
+                            return false;
+                        }
+
                         $root.find(".image-preview").append(templateImage(eval(resData)));
     
                         // if val is empty add url image
@@ -80,6 +88,12 @@
         --------------------------------------------- */
         var onRemoveImage = function(){
             var $parent =  $(this).closest('.image-item');
+
+            if(single){
+                $hiddenInput.val('');
+                $parent.remove();
+                return false;
+            }
 
             var dataImage = $parent.find('img').attr('data-image');
             // convert val to array
@@ -135,6 +149,17 @@
                 form.append("uploadfile",  file);
 
                 uploadImage(form , function(data){
+                    if(single){
+                        $root.find(".image-preview").html(templateImage(eval(resData)));
+                        hiddenInput = eval(resData);
+                        $hiddenInput.val(eval(resData) );
+                        // hidden popup
+                        $rootModal.find('#modal-crop-image').modal('hide');
+                        return false;
+                    }
+
+
+
                     $root.find(".image-preview").append(templateImage(eval(resData)));
 
                     // if val is empty add url image
