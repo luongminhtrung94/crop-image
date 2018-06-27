@@ -15,10 +15,15 @@
 <body style="padding:30px">
 
     <form id="formSubmit" method="POST">
+    <select id="selectResize">
+        <option value="1200x300" selected>1200x780</option>
+        <option value="300x400">300x400</option>
+        <option value="500x500">500x500</option>
+    </select>
     <div class="multi-upload-file multi-upload-file1">
         <label class="mark-input" for="file-upload1">+</label>
         <input type="file" style="display: none" id="file-upload1" class="input-upload-file"  accept="image/x-png,image/gif,image/jpeg"/>
-        <input type='hidden' value="http://localhost:8000/uploads/5656a56e334776bc121e1b7d8b88b6ba1528428987296.jpg"/>
+        <input type='hidden' value=""/>
 
         <div class="image-preview"></div>
         <div style="clear:both"></div>
@@ -45,7 +50,10 @@
         $(".multi-upload-file1").uploadMultiImage({
             urlApi:"http://localhost:8000/uploads",
             single: true,
-            resData: "data.url"
+            resData: "data.url",
+            selectResize: "#selectResize",
+            sizeLimit: 2 * 1024 * 1000,
+            resizeMessage: "Vui lòng chọn file có kích thước nhỏ hơn 2MB"
         });
         $(".multi-upload-file2").uploadMultiImage({
             urlApi:"http://localhost:8000/uploads",

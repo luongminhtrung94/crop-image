@@ -8,6 +8,17 @@
         var $rootModal;
         var urlApi = options.urlApi || "";
         var single = options.single || false;
+        var $selectResize , widthResize , heightResize;
+        var sizeLimit = options.sizeLimit || false;
+        var resizeMessage = options.resizeMessage || "";
+        if(options.selectResize){
+            $selectResize = $(options.selectResize);
+            var valueResize = $selectResize.val().split("x");
+            widthResize = valueResize[0];
+            heightResize = valueResize[1];
+        }else{
+            $selectResize = false;
+        }
 
         var resData = options.resData;
 
@@ -25,6 +36,11 @@
             zoomable:false
         };
 
+        if($selectResize){
+            options.aspectRatio = widthResize / heightResize;
+            options.autoCropArea = 1;
+            options.cropBoxResizable = false;
+        }
 		var init = function(){
 
             // init old data
@@ -55,6 +71,10 @@
             function readURL(input) {
                 
                 for(var i = 0 ; i < input.files.length ; i++){
+                    if(sizeLimit && input.files[i].size > sizeLimit){
+                        alert(resizeMessage);
+                        return false;
+                    }
                     var form = new FormData();
                     form.append("uploadfile", input.files[i]);
     
@@ -82,6 +102,19 @@
                 }
             }
         }
+
+        /*---------------------------------------
+            CHANGE RATIO
+        ------------------------------------------*/
+        if($selectResize){
+            $selectResize.on("change" , function(){
+                var valueResize = $(this).val().split("x");
+                widthResize = valueResize[0];
+                heightResize = valueResize[1];
+                cropper.options.aspectRatio = widthResize / heightResize;
+            });
+        }
+
 
         /*--------------------------------------------
             REMOVE IMAGE
@@ -142,8 +175,12 @@
             CROP IMAGE
         ------------------------------------------------------ */
         var onCropImage =  function(){
-            console.log($imageCrop);
-            $imageCrop.cropper("getCroppedCanvas").toBlob(function (blob) {
+            var configResize = {}
+            if(selectResize){
+                configResize.width = widthResize;
+                configResize.height = heightResize;
+            }
+            $imageCrop.cropper("getCroppedCanvas",configResize).toBlob(function (blob) {
                 var file = new File([blob], $selectedImage.find('img').attr('data-image') );
                 var form = new FormData();
                 form.append("uploadfile",  file);
