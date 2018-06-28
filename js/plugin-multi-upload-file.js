@@ -178,7 +178,7 @@
         ------------------------------------------------------ */
         var onCropImage =  function(){
             var configResize = {}
-            if(selectResize){
+            if($selectResize){
                 configResize.width = widthResize;
                 configResize.height = heightResize;
             }
