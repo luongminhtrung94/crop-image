@@ -23,7 +23,7 @@
         var resData = options.resData;
 
         var $hiddenInput = $root.find('input[type="hidden"]');
-        var hiddenInput = ($hiddenInput.val().split(",")[0]) ? $hiddenInput.val().split(",") : [] ;
+        var hiddenInput = ($hiddenInput.val()) ? $hiddenInput.val().split(",") : [] ;
 
         var $selectedImage;
 
@@ -108,6 +108,7 @@
         ------------------------------------------*/
         if($selectResize){
             $selectResize.on("change" , function(){
+                if(!cropper) return;
                 var valueResize = $(this).val().split("x");
                 widthResize = valueResize[0];
                 heightResize = valueResize[1];
@@ -159,6 +160,7 @@
                 $imageCrop.cropper(options);
                 cropper = $imageCrop.data('cropper');
                 cropper.replace(urlImage);
+                $selectResize.trigger("change");
             });
 
             $rootModal.find('#modal-crop-image').modal('show');
