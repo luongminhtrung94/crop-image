@@ -6,6 +6,7 @@
 	var uploadMultiImage = function (options) {
         var $root = $(this);
         var $rootModal;
+        var $inputFile = $root.find(".mark-input");
         var urlApi = options.urlApi || "";
         var single = options.single || false;
         var $selectResize , widthResize , heightResize;
@@ -46,6 +47,9 @@
             // init old data
             hiddenInput.forEach(element => {
                 $root.find(".image-preview").append(templateImage(element));
+                if(single){
+                    $inputFile.hide();
+                }
             });
 
             var idModal = Date.now();
@@ -83,6 +87,7 @@
                             $root.find(".image-preview").html(templateImage(eval(resData)));
                             hiddenInput = eval(resData);
                             $hiddenInput.val(eval(resData) );
+                            $inputFile.hide();
                             return false;
                         }
 
@@ -126,6 +131,7 @@
             if(single){
                 $hiddenInput.val('');
                 $parent.remove();
+                $inputFile.show();
                 return false;
             }
 
