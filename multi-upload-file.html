@@ -57,7 +57,9 @@
         });
         $(".multi-upload-file2").uploadMultiImage({
             urlApi:"http://localhost:8000/uploads",
-            resData: "data.url"
+            resData: "data.url",
+            limit:2,
+            limitMessage:"số file được phép upload tối đa là 5 file"
         });
     </script>
 

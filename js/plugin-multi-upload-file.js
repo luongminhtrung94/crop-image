@@ -6,6 +6,8 @@
 	var uploadMultiImage = function (options) {
         var $root = $(this);
         var $rootModal;
+        var limit = options.limit || false;
+        var limitMessage = options.limitMessage || "";
         var $inputFile = $root.find(".mark-input");
         var urlApi = options.urlApi || "";
         var single = options.single || false;
@@ -73,7 +75,13 @@
             
             // CONVERT IMAGE TO BASE 64
             function readURL(input) {
-                
+                if(limit){
+                    var count = hiddenInput.length + input.files.length;
+                    if(count > limit){
+                        alert(limitMessage);
+                        return false;
+                    }
+                }
                 for(var i = 0 ; i < input.files.length ; i++){
                     if(sizeLimit && input.files[i].size > sizeLimit){
                         alert(resizeMessage);
