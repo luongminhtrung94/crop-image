@@ -174,7 +174,9 @@
                 $imageCrop.cropper(options);
                 cropper = $imageCrop.data('cropper');
                 cropper.replace(urlImage);
-                $selectResize.trigger("change");
+                if($selectResize){
+                    $selectResize.trigger("change");
+                }
             });
 
             $rootModal.find('#modal-crop-image').modal('show');
